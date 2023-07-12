@@ -15,8 +15,6 @@ const List = ({index, listId}) => {
     const [addingCard, setAddingCard] = useState(false)
     const [editingTitle, setEditingTitle] = useState(false)
 
-    console.log(list[listId],'랜더 확리')
-
     const handleEditTile = () => {
         setEditingTitle(prevState => !prevState)
     }
@@ -39,16 +37,19 @@ const List = ({index, listId}) => {
 
     // 리스트 삭
     const handleDeleteList =async () =>{
-        console.log(listId,'리스트 삭제')
-
         dispatch(DELETE_LIST({listId}))
         // DELETE_LIST
     }
-    console.log(list[listId],'lllllll')
-    return (
-        <div className="List">
-            <>
 
+    return (
+        <Draggable draggableId={list[listId]._id} index={index}>
+            {(provided, snapshot) => (
+                <div className="List"
+                     ref={provided.innerRef}
+                     {...provided.draggableProps}
+                     {...provided.dragHandleProps}
+                >
+            <>
                 {editingTitle ?
                     <ListEditor
                         list={list}
@@ -87,6 +88,8 @@ const List = ({index, listId}) => {
 
 
         </div>
+            )}
+        </Draggable>
     );
 }
 export default List;

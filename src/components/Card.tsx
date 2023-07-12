@@ -24,7 +24,6 @@ const Card = ({cardId}) => {
     }
 
     const handleEditCard =async(text) => {
-        console.log(text,'수정 텍스트')
         handleEndEdit()
         const params = { cardId: card[cardId]._id, cardText: text}
         await dispatch(CHANGE_CARD_TEXT(params))
@@ -35,7 +34,7 @@ const Card = ({cardId}) => {
         const params = { cardId: card[cardId]._id, cardText: text}
         await dispatch(DELETE_CARD(params))
     }
-    console.log(card[cardId],'gpgpgp')
+
     return(
         <>
             {!editing ?

@@ -37,7 +37,6 @@ export const BoardReducer = createSlice({
     reducers: {
         ADD_LIST: (state= state, action) => {
             const { listId, listTitle } = action.payload;
-            console.log(current(state),listId,'ssss')
             state.listIds.push(listId)
             state.listsById = {
                 ...state['listsById'],
@@ -46,11 +45,12 @@ export const BoardReducer = createSlice({
             }
         },
         MOVE_LIST: (state=state, action) => {
-            // const { oldListIndex, newListIndex } = action.payload;
-            // const newLists = Array.from(state.lists);
-            // const [removedList] = newLists.splice(oldListIndex, 1);
-            // newLists.splice(newListIndex, 0, removedList);
-            // return { lists: newLists };
+            const { oldListIndex, newListIndex } = action.payload;
+            console.log(oldListIndex, newListIndex,'data')
+            const newLists = Array.from(state.listIds);
+            const [removedList] = newLists.splice(oldListIndex, 1);
+            newLists.splice(newListIndex, 0, removedList);
+            state.listIds = newLists
         },
         DELETE_LIST: (state=state, action) => {
             const { listId } = action.payload;
