@@ -4,7 +4,7 @@ import List from "@/components/List";
 import {useEffect, useState} from "react";
 import {isEqual} from "lodash";
 import AddList from "@/components/AddList";
-import {MOVE_LIST} from "@/reducer/BoardReducer";
+import {MOVE_CARD, MOVE_LIST} from "@/reducer/BoardReducer";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 
 
@@ -28,6 +28,8 @@ const Board = () =>{
         // draggableId: 선택된 객체의 ID (in atom.ts)
         //source : 시작점 (drag 시작 정보)
         if (!destination) return;
+
+        // 리스트 이동
         if (type === "COLUMN") {
             if (source.index !== destination.index) {
                 console.log('func, list move')
@@ -40,6 +42,20 @@ const Board = () =>{
             }
             return;
         }
+
+        // 카드 이동
+        if (
+            source.index !== destination.index ||
+            source.droppableId !== destination.droppableId
+        ) {
+            dispatch(MOVE_CARD({
+                    sourceListId: source.droppableId,
+                    destListId: destination.droppableId,
+                    oldCardIndex: source.index,
+                    newCardIndex: destination.index
+            }));
+        }
+
     }
 
     const toggleAddingList = () => {

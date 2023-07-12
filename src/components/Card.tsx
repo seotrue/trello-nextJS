@@ -1,16 +1,22 @@
 import {useDispatch, useSelector} from "react-redux";
 import shortid from "shortid";
-import {Droppable} from "react-beautiful-dnd";
-import {useState} from "react";
+import {Draggable, Droppable} from "react-beautiful-dnd";
+import {useEffect, useState} from "react";
 import CardEditor from "@/components/CardEditor";
 import {CHANGE_CARD_TEXT, DELETE_CARD} from "@/reducer/BoardReducer";
 
 
-const Card = ({cardId}) => {
+const Card = ({cardId, index}) => {
     const { cardsById: card } = useSelector((state) => state?.boardStore);
     const dispatch = useDispatch();
     const [hover, setHover] = useState(false)
     const [editing, setEditing] = useState(false)
+
+    const [ready, setReady] = useState(false)
+
+    useEffect(()=>{
+        setReady(true)
+    },[])
 
     const handleStartEdit = () => {
         setHover(true)
@@ -36,30 +42,42 @@ const Card = ({cardId}) => {
     }
 
     return(
+
         <>
-            {!editing ?
-                <div
-                    className="Card"
-                    onMouseEnter={()=>setHover(true)}
-                    onMouseLeave={()=>setHover(false)}
-                >
-                    {hover && (
-                        <div className="Card-Icons">
-                            <div className="Card-Icon" onClick={handleStartEdit}>
-                                +
+            { ready ?
+                (!editing ?
+                    <Draggable draggableId={card[cardId]._id} index={index}>
+                        {(provided, snapshot) => (
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="Card"
+                                onMouseEnter={()=>setHover(true)}
+                                onMouseLeave={()=>setHover(false)}
+                            >
+                                {hover && (
+                                    <div className="Card-Icons">
+                                        <div className="Card-Icon" onClick={handleStartEdit}>
+                                            +
+                                        </div>
+                                    </div>
+                                )}
+                                {card[cardId]?.text || ''}
                             </div>
-                        </div>
-                    )}
-                    {card[cardId]?.text || ''}
-                </div>
-                :
-                <CardEditor
-                    text={card[cardId]?.text || ''}
-                    onSave={handleEditCard}
-                    onDelete={handleDeleteCard}
-                    onCancel={handleEndEdit}
-                />
+                        )}
+                    </Draggable>
+                    :
+                    <CardEditor
+                        text={card[cardId]?.text || ''}
+                        onSave={handleEditCard}
+                        onDelete={handleDeleteCard}
+                        onCancel={handleEndEdit}
+                    />
+            ):
+                null
             }
+
         </>
     )
 

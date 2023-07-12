@@ -27,7 +27,7 @@ const initialState:IBoard = {
             list0:{text:'디폴트', _id:'list0' , cards:['card1']}
         },
         cardsById: {
-            card1:{text: '디폴트카드',_id:'card1' }
+            'card1':{text: '디폴트카드',_id:'card1' }
         },
 }
 
@@ -89,12 +89,40 @@ export const BoardReducer = createSlice({
             }
             state.cardsById = base.cardsById
         },
-
         DELETE_CARD: (state= state, action) => {
             const { cardId } = action.payload;
             const base = cloneDeep(state)
             delete base.cardsById[cardId]
             state.cardsById = base.cardsById
+        },
+        MOVE_CARD: (state= state, action) => {
+            const {
+                oldCardIndex,
+                newCardIndex,
+                sourceListId,
+                destListId
+            } = action.payload;
+
+            // 동일 리스트 안에서 이동
+            if (sourceListId === destListId) {
+                console.log('동일')
+                const newCards = Array.from(state.listsById[sourceListId].cards);
+                const [removedCard] = newCards.splice(oldCardIndex, 1);
+                newCards.splice(newCardIndex, 0, removedCard);
+                state.listsById[sourceListId] = { ...state[sourceListId], cards: newCards }
+            } else {
+                // 다른 리스트로 이동
+                console.log('다른')
+                const sourceCards = Array.from(state.listsById[sourceListId].cards);
+                console.log(sourceCards,'sourceCards')
+                const [removedCard] = sourceCards.splice(oldCardIndex, 1);
+                const destinationCards = Array.from(state.listsById[destListId].cards);
+                destinationCards.splice(newCardIndex, 0, removedCard);
+                state.listsById[sourceListId] = { ...state[sourceListId], cards: sourceCards }
+                state.listsById[destListId] = { ...state[destListId], cards: destinationCards }
+            }
+
+
         },
     },
     extraReducers:{
@@ -111,6 +139,7 @@ export const {
     ADD_CARD,
     CHANGE_CARD_TEXT,
     DELETE_CARD,
+    MOVE_CARD
 } = BoardReducer.actions
 
 

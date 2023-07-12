@@ -65,16 +65,22 @@ const List = ({index, listId}) => {
                     </div>
                 }
 
-
-                {list[listId].cards &&
-                    list[listId].cards.map((cardId, index) => (
-                    <Card
-                        key={cardId}
-                        cardId={cardId}
-                        index={index}
-                        listId={list[listId]._id}
-                    />
-                ))}
+                <Droppable droppableId={list[listId]._id}>
+                    {(provided, _snapshot) => (
+                        <div ref={provided.innerRef}>
+                        {list[listId].cards &&
+                            list[listId].cards.map((cardId, index) => (
+                            <Card
+                                key={cardId}
+                                cardId={cardId}
+                                index={index}
+                                listId={list[listId]._id}
+                            />
+                        ))}
+                        {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
                 { addingCard ?
                     <CardEditor
                         onSave={addCard}
