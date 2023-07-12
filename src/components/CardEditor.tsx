@@ -4,17 +4,17 @@ import EditButtons from "@/components/EditButtons";
 
 
 
-const CardEditor = ({onSave, onCancel, onDelete, adding}) => {
-    const [text, setText] = useState('')
+const CardEditor = ({onSave, onCancel, onDelete, text}) => {
+    const [newText, setNewText] = useState(text)
 
     const handleChangeText = (e) => {
-        setText(e.target.value)
+        setNewText(e.target.value)
     }
 
     const handleEnter = (e) => {
         if (e.keyCode === 13) {
             e.preventDefault();
-            onSave(text);
+            onSave(newText);
         }
     }
 
@@ -25,14 +25,14 @@ const CardEditor = ({onSave, onCancel, onDelete, adding}) => {
                     autoFocus
                     className="Edit-Card-Textarea"
                     placeholder="Enter the text for this card..."
-                    value={text}
+                    value={newText}
                     onChange={handleChangeText}
                     onKeyDown={handleEnter}
                 />
             </div>
             <EditButtons
                 handleSave={() => onSave(text)}
-                saveLabel={adding ? "Add card" : "Save"}
+                saveLabel={"Add card"}
                 handleDelete={onDelete}
                 handleCancel={onCancel}
             />
