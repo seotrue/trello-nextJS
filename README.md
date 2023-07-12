@@ -53,3 +53,8 @@
     5. CardEditor: 카드 편집
     6. EditButton: 기능성 버튼
     8. ListEditor: 리스트 편집,삭제
+
+## store
+- RootReducer : 여러 리듀서 combineReducers 합체
+- next-redux-wrapper: 클라, 서버 상태 합체
+
