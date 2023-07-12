@@ -41,9 +41,7 @@ const List = ({index, listId}) => {
         dispatch(DELETE_LIST({listId}))
         // DELETE_LIST
     }
-    console.log(listId,'1')
-    console.log(list,'2')
-    console.log(list[listId]._id,'3')
+
     return (
         <Draggable draggableId={list[listId]._id} index={index}>
             {(provided, snapshot) => (

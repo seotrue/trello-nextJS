@@ -1,25 +1,12 @@
 import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {cloneDeep, find} from "lodash";
+import {loadBoardAsync} from "@/services/Board";
 
 interface IBoard {
     listIds?: string[];
     listsById?: object
     cardsById?: object;
 }
-// interface IList {
-//     [propName:string] :{
-//         text:string,
-//         _id:string,
-//         cards: []
-//     }
-// }
-//
-// interface ICard {
-//     [propName:string] :{
-//         text:string,
-//         _id:string,
-//     }
-// }
 
 const initialState:IBoard = {
         listIds: ['list0'],
@@ -83,7 +70,6 @@ export const BoardReducer = createSlice({
         },
         DELETE_CARD: (state= state, action) => {
             const { cardId, listId } = action.payload;
-            console.log(cardId,'ㄹ;덗,')
             const newCardIds= state.listsById[listId].cards.filter(v => v !== cardId)
             delete state.cardsById[cardId]
             state.listsById[listId] = {...state.listsById[listId], cards: [...newCardIds]}
@@ -120,7 +106,9 @@ export const BoardReducer = createSlice({
         },
     },
     extraReducers:{
-
+        [loadBoardAsync.pending.type]: (state, action) => {},
+        [loadBoardAsync.fulfilled.type]: (state, action) => {},
+        [loadBoardAsync.rejected.type]: (state, action) => {},
     }
 })
 
