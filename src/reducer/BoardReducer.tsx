@@ -63,7 +63,6 @@ export const BoardReducer = createSlice({
             state.listIds = newLists
 
         },
-
         ADD_CARD: (state= state,action) => {
             const {cardText, cardId, listId} = action.payload;
             const base = cloneDeep(state)
@@ -80,20 +79,15 @@ export const BoardReducer = createSlice({
         },
         CHANGE_CARD_TEXT: (state= state, action) => {
             const { cardText, cardId } = action.payload;
-            const base = cloneDeep(state)
-            base.cardsById = {
-                ...base.cardsById,
-                [cardId]: {
-                    text: cardText
-                }
-            }
-            state.cardsById = base.cardsById
+            state.cardsById[cardId] = { _id:cardId, text: cardText}
         },
         DELETE_CARD: (state= state, action) => {
-            const { cardId } = action.payload;
-            const base = cloneDeep(state)
-            delete base.cardsById[cardId]
-            state.cardsById = base.cardsById
+            const { cardId, listId } = action.payload;
+            console.log(cardId,'ㄹ;덗,')
+            const newCardIds= state.listsById[listId].cards.filter(v => v !== cardId)
+            delete state.cardsById[cardId]
+            state.listsById[listId] = {...state.listsById[listId], cards: [...newCardIds]}
+
         },
         MOVE_CARD: (state= state, action) => {
             const {
@@ -109,7 +103,7 @@ export const BoardReducer = createSlice({
                 const newCards = Array.from(state.listsById[sourceListId].cards);
                 const [removedCard] = newCards.splice(oldCardIndex, 1);
                 newCards.splice(newCardIndex, 0, removedCard);
-                state.listsById[sourceListId] = { ...state[sourceListId], cards: newCards }
+                state.listsById[sourceListId] = { ...state.listsById[sourceListId], cards: [...newCards] }
             } else {
                 // 다른 리스트로 이동
                 console.log('다른')
@@ -118,8 +112,8 @@ export const BoardReducer = createSlice({
                 const [removedCard] = sourceCards.splice(oldCardIndex, 1);
                 const destinationCards = Array.from(state.listsById[destListId].cards);
                 destinationCards.splice(newCardIndex, 0, removedCard);
-                state.listsById[sourceListId] = { ...state[sourceListId], cards: sourceCards }
-                state.listsById[destListId] = { ...state[destListId], cards: destinationCards }
+                state.listsById[sourceListId] = { ...state.listsById[sourceListId], cards: [...sourceCards] }
+                state.listsById[destListId] = { ...state.listsById[destListId], cards: [...destinationCards] }
             }
 
 

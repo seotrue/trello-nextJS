@@ -6,7 +6,7 @@ import CardEditor from "@/components/CardEditor";
 import {CHANGE_CARD_TEXT, DELETE_CARD} from "@/reducer/BoardReducer";
 
 
-const Card = ({cardId, index}) => {
+const Card = ({cardId, index, listId}) => {
     const { cardsById: card } = useSelector((state) => state?.boardStore);
     const dispatch = useDispatch();
     const [hover, setHover] = useState(false)
@@ -30,17 +30,19 @@ const Card = ({cardId, index}) => {
     }
 
     const handleEditCard =async(text) => {
-        handleEndEdit()
         const params = { cardId: card[cardId]._id, cardText: text}
+        await handleEndEdit()
         await dispatch(CHANGE_CARD_TEXT(params))
     }
 
     // 카드 삭제
-    const handleDeleteCard = async(text) =>{
-        const params = { cardId: card[cardId]._id, cardText: text}
+    const handleDeleteCard = async() =>{
+        console.log('카드 삭제')
+        const params = { cardId: card[cardId]._id, listId}
         await dispatch(DELETE_CARD(params))
     }
-
+    console.log(cardId,'cardId')
+    console.log(card,'card')
     return(
 
         <>

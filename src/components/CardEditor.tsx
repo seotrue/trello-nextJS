@@ -31,7 +31,7 @@ const CardEditor = ({onSave, onCancel, onDelete, text}) => {
                 />
             </div>
             <EditButtons
-                handleSave={() => onSave(text)}
+                handleSave={() => onSave(newText)}
                 saveLabel={"Add card"}
                 handleDelete={onDelete}
                 handleCancel={onCancel}

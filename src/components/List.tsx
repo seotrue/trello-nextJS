@@ -25,6 +25,7 @@ const List = ({index, listId}) => {
 
     // 카드 생성
     const addCard = async (cardText) => {
+        console.log(cardText,'카드 생성')
         const cardId = shortid.generate();
         const params:any = {
             cardText,
@@ -35,12 +36,14 @@ const List = ({index, listId}) => {
         await handleToggleAddingCard()
     }
 
-    // 리스트 삭
+    // 리스트 삭제
     const handleDeleteList =async () =>{
         dispatch(DELETE_LIST({listId}))
         // DELETE_LIST
     }
-
+    console.log(listId,'1')
+    console.log(list,'2')
+    console.log(list[listId]._id,'3')
     return (
         <Draggable draggableId={list[listId]._id} index={index}>
             {(provided, snapshot) => (
@@ -73,7 +76,7 @@ const List = ({index, listId}) => {
                             <Card
                                 key={cardId}
                                 cardId={cardId}
-                                index={index}
+                                index={cardId}
                                 listId={list[listId]._id}
                             />
                         ))}
