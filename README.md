@@ -52,5 +52,4 @@
     4. Card.tsx : 카드
     5. CardEditor: 카드 편집
     6. EditButton: 기능성 버튼
-    7. 
     8. ListEditor: 리스트 편집,삭제
