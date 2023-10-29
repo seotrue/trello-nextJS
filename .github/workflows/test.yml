@@ -1,4 +1,4 @@
-name: test workflow                   # Workflow 이름
+name: test workflows                   # Workflow 이름
 on: [push]                            # Event 감지
 jobs:                                 # Job 설정
   check-bats-version:                 # Job 이름
